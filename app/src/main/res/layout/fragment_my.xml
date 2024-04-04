@@ -12,11 +12,11 @@
     <TextView
         android:id="@+id/frag_textView"
         style="@style/labels"
-        android:text="@string/hello_blank_fragment" />
+        android:text="" />
 
     <Button
         android:id="@+id/frag_button"
-        android:text="BOTAO"
+        android:text=""
         style="@style/buttons" />
 
 

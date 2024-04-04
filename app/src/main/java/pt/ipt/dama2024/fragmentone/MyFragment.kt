@@ -8,11 +8,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import com.google.android.material.snackbar.Snackbar
 
 
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val ARG_PARAM_TXT_LABEL = ""
+private const val ARG_PARAM_TXT_BUTTON = ""
+private const val ARG_PARAM_FRAG_ID = "0"
 
 /**
  * A simple [Fragment] subclass.
@@ -20,14 +22,16 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  */
 class MyFragment : Fragment() {
-    private var param1: String? = null
-    private var param2: String? = null
+    private var txtLabel: String? = null
+    private var txtButton: String? = null
+    private var fragID: Byte = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            txtLabel = it.getString(ARG_PARAM_TXT_LABEL)
+            txtButton = it.getString(ARG_PARAM_TXT_BUTTON)
+            fragID = it.getByte(ARG_PARAM_FRAG_ID)
         }
     }
 
@@ -36,20 +40,29 @@ class MyFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        val view:View= inflater.inflate(R.layout.fragment_my, container, false)
+        val view: View = inflater.inflate(R.layout.fragment_my, container, false)
 
         // look for objects of fragment
-       val aux_txt:TextView=view.findViewById(R.id.frag_textView)
+        val aux_txt: TextView = view.findViewById(R.id.frag_textView)
         val aux_bt = view.findViewById<Button>(R.id.frag_button)
 
         // assign parameters values to objects from fragment
-        aux_txt.text=param1
-        aux_bt.text=param2
+        aux_txt.text = txtLabel
+        aux_bt.text = txtButton
 
         // add some action to button
         aux_bt.setOnClickListener {
-            Toast.makeText(this.context,"you pressed the button $param2",
-                Toast.LENGTH_LONG).show()
+            if (fragID % 2 != 0) {
+                Toast.makeText(
+                    this.context, "you pressed the button \"$txtButton\"",
+                    Toast.LENGTH_LONG
+                ).show()
+            } else {
+                Snackbar.make(
+                    view, "you pressed the button \"$txtButton\"",
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
             /*
             "you pressed the button " + param2
             <=> "you pressed the button $param2"
@@ -64,17 +77,19 @@ class MyFragment : Fragment() {
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
+         * @param txtLabel text to be assigned to fragment label.
+         * @param txtButton text to be assigned to fragment button.
+         * @param fragID fragment number
          * @return A new instance of fragment MyFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(txtLabel: String, txtButton: String, fragID: Byte) =
             MyFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putString(ARG_PARAM_TXT_LABEL, txtLabel)
+                    putString(ARG_PARAM_TXT_BUTTON, txtButton)
+                    putByte(ARG_PARAM_FRAG_ID, fragID)
                 }
             }
     }
